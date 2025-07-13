@@ -154,3 +154,4 @@ C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\runt
 C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\obj\Debug\net9.0\financecontrol.sourcelink.json

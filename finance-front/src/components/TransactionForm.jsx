@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import api from "../services/api";
 
-function TransactionForm({ onAdd }) {
+function TransactionForm({ onAdd, transaction, onCancel }) {
   const [form, setForm] = useState({
     type: "Expense",
     amount: "",
@@ -9,6 +9,15 @@ function TransactionForm({ onAdd }) {
     category: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (transaction) {
+      setForm({
+        ...transaction,
+        date: transaction.date.split("T")[0], // ajusta para o formato do input date
+      });
+    }
+  }, [transaction]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,7 +34,12 @@ function TransactionForm({ onAdd }) {
     };
 
     try {
-      const response = await api.post("/transactions", payload);
+      if (transaction?.id) {
+        await api.put(`/transactions/${transaction.id}`, payload);
+      } else {
+        await api.post("/transactions", payload);
+      }
+
       setForm({
         type: "Expense",
         amount: "",
@@ -33,7 +47,8 @@ function TransactionForm({ onAdd }) {
         category: "",
         description: "",
       });
-      if (onAdd) onAdd(response.data);
+
+      if (onAdd) onAdd();
     } catch (error) {
       console.error("Erro ao salvar transação:", error);
       alert("Erro ao salvar transação.");
@@ -41,7 +56,10 @@ function TransactionForm({ onAdd }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 space-y-4 bg-white rounded shadow-md mb-6">
+    <form
+      onSubmit={handleSubmit}
+      className="p-4 space-y-4 bg-white rounded shadow-md mb-6"
+    >
       <div className="flex gap-4">
         <label className="flex-1">
           Tipo:
@@ -105,12 +123,24 @@ function TransactionForm({ onAdd }) {
         />
       </label>
 
-      <button
-        type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-      >
-        Adicionar Transação
-      </button>
+      <div className="flex gap-4 items-center">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          {transaction ? "Salvar Alterações" : "Adicionar Transação"}
+        </button>
+
+        {transaction && (
+          <button
+            type="button"
+            onClick={onCancel}
+            className="text-gray-600 underline"
+          >
+            Cancelar
+          </button>
+        )}
+      </div>
     </form>
   );
 }

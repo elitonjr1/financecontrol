@@ -5,14 +5,14 @@ import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
-function Dashboard() {
+function Dashboard({ refresh }) {
   const [summary, setSummary] = useState(null);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     api.get("/transactions/summary").then((res) => setSummary(res.data));
     api.get("/transactions/by-category").then((res) => setCategories(res.data));
-  }, []);
+  }, [refresh]); // ✅ atualiza sempre que refresh mudar
 
   if (!summary) return <p className="text-center">Carregando dashboard...</p>;
 
