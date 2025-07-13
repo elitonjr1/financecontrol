@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   const handleAdd = () => {
-    setRefresh(!refresh);
+    setRefresh((r) => !r);
     setEditing(null);
   };
 
@@ -27,7 +27,7 @@ function App() {
     if (confirm("Deseja excluir esta transação?")) {
       try {
         await api.delete(`/transactions/${id}`);
-        setRefresh(!refresh);
+        setRefresh((r) => !r);
       } catch (err) {
         console.error("Erro ao deletar transação:", err);
       }
@@ -40,7 +40,9 @@ function App() {
     setLoggedIn(false);
   };
 
-  if (!loggedIn) return <Login onLogin={() => setLoggedIn(true)} />;
+  if (!loggedIn) {
+    return <Login onLogin={() => setLoggedIn(true)} />;
+  }
 
   return (
     <div className="max-w-4xl mx-auto mt-8">
