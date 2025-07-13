@@ -155,3 +155,11 @@ C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Swas
 C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\obj\Debug\net9.0\financecontrol.sourcelink.json
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\synis\OneDrive\Documentos\Projetos\financecontrol\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

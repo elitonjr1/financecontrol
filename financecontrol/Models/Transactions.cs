@@ -5,10 +5,13 @@ namespace FinanceControl.Models
     public class Transaction
     {
         public int Id { get; set; }
-        public decimal Amount { get; set; }           // Valor da transação
-        public DateTime Date { get; set; }            // Data da transação
-        public string Type { get; set; } = string.Empty; // "Income" ou "Expense"
+        public string Type { get; set; } = string.Empty;
+        public decimal Amount { get; set; }
         public string Category { get; set; } = string.Empty;
-        public string? Description { get; set; }
+        public string Description { get; set; } = string.Empty;
+        public DateTime Date { get; set; }
+
+        public Guid UserId { get; set; }
+        public User? User { get; set; }
     }
 }

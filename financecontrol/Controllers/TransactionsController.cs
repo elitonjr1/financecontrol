@@ -1,8 +1,9 @@
-// Controllers/TransactionsController.cs
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using FinanceControl.Data;
 using FinanceControl.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace FinanceControl.Controllers
 {
@@ -17,63 +18,79 @@ namespace FinanceControl.Controllers
             _context = context;
         }
 
-        // GET: api/transactions
+        private Guid GetUserId()
+        {
+            return Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+        }
+
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Transaction>>> GetTransactions()
         {
-            return await _context.Transactions.ToListAsync();
+            Guid userId = GetUserId();
+            return await _context.Transactions
+                .Where(t => t.UserId == userId)
+                .ToListAsync();
         }
 
-        // GET: api/transactions/5
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<Transaction>> GetTransaction(int id)
         {
-            var transaction = await _context.Transactions.FindAsync(id);
+            Guid userId = GetUserId();
+            var transaction = await _context.Transactions
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
             if (transaction == null)
                 return NotFound();
 
             return transaction;
         }
 
-        // POST: api/transactions
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Transaction>> PostTransaction(Transaction transaction)
         {
+            transaction.UserId = GetUserId();
+
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(GetTransaction), new { id = transaction.Id }, transaction);
         }
 
-        // PUT: api/transactions/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
         {
+            Guid userId = GetUserId();
+
             if (id != transaction.Id)
                 return BadRequest();
 
+            var existing = await _context.Transactions
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
+            if (existing == null)
+                return NotFound();
+
+            transaction.UserId = userId;
             _context.Entry(transaction).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!_context.Transactions.Any(e => e.Id == id))
-                    return NotFound();
-
-                throw;
-            }
-
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 
-        // DELETE: api/transactions/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTransaction(int id)
         {
-            var transaction = await _context.Transactions.FindAsync(id);
+            Guid userId = GetUserId();
+
+            var transaction = await _context.Transactions
+                .FirstOrDefaultAsync(t => t.Id == id && t.UserId == userId);
+
             if (transaction == null)
                 return NotFound();
 
@@ -83,16 +100,18 @@ namespace FinanceControl.Controllers
             return NoContent();
         }
 
-        // GET: api/transactions/summary
+        [Authorize]
         [HttpGet("summary")]
         public async Task<ActionResult<object>> GetSummary()
         {
+            Guid userId = GetUserId();
+
             var totalIncome = await _context.Transactions
-                .Where(t => t.Type == "Income")
+                .Where(t => t.Type == "Income" && t.UserId == userId)
                 .SumAsync(t => t.Amount);
 
             var totalExpense = await _context.Transactions
-                .Where(t => t.Type == "Expense")
+                .Where(t => t.Type == "Expense" && t.UserId == userId)
                 .SumAsync(t => t.Amount);
 
             var balance = totalIncome - totalExpense;
@@ -105,12 +124,14 @@ namespace FinanceControl.Controllers
             });
         }
 
-        // GET: api/transactions/by-category
+        [Authorize]
         [HttpGet("by-category")]
         public async Task<ActionResult<IEnumerable<object>>> GetTotalsByCategory()
         {
+            Guid userId = GetUserId();
+
             var result = await _context.Transactions
-                .Where(t => t.Type == "Expense")
+                .Where(t => t.Type == "Expense" && t.UserId == userId)
                 .GroupBy(t => t.Category)
                 .Select(g => new
                 {
@@ -121,6 +142,5 @@ namespace FinanceControl.Controllers
 
             return Ok(result);
         }
-
     }
 }
