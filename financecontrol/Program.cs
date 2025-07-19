@@ -6,7 +6,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Services
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
@@ -17,9 +17,9 @@ builder.Services.AddDbContext<FinancasDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("https://myfinancecontrol.vercel.app")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
 
 var jwtKey = builder.Configuration["Jwt:Key"];
 if (string.IsNullOrEmpty(jwtKey))
-    throw new Exception("JWT Key not configured. Set it using user-secrets or appsettings.json.");
+    throw new Exception("JWT Key not configured.");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -44,26 +44,26 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
-// APLICA AS MIGRAÇÕES AUTOMATICAMENTE NO STARTUP
+// Aplica migrações
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<FinancasDbContext>();
-    db.Database.Migrate(); // aplica as migrações pendentes
+    db.Database.Migrate();
 }
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Swagger sempre ativo
+app.MapOpenApi();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseCors("AllowLocalhost");
+app.UseCors("AllowFrontend");
 // app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.Run();
 
-Console.WriteLine("JWT KEY => " + builder.Configuration["Jwt:Key"]);
+// Porta obrigatória no Render
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Add($"http://*:{port}");
+
+app.Run();
