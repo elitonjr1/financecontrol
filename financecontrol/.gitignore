@@ -1,0 +1,18 @@
+# .NET build
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.pdb
+*.log
+
+# EF Core Migrations (opcional — remova se quiser versionar migrações)
+Migrations/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
