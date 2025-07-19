@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://financecontrol-f6x1.onrender.com",
+  baseURL: "https://financecontrol-backend.onrender.com",
 });
 
 // carregar token do localStorage (se existir)
