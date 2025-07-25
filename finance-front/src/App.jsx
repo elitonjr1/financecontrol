@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import api from "./services/api";
 import Login from "./components/Login";
-import TransactionForm from "./components/TransactionForm";
-import TransactionList from "./components/TransactionList";
 import Dashboard from "./components/Dashboard";
+import SidebarWithModal from "./components/SidebarWithModal";
 
 function App() {
   const [refresh, setRefresh] = useState(false);
-  const [editing, setEditing] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -18,21 +16,7 @@ function App() {
     }
   }, []);
 
-  const handleAdd = () => {
-    setRefresh((r) => !r);
-    setEditing(null);
-  };
-
-  const handleDelete = async (id) => {
-    if (confirm("Deseja excluir esta transação?")) {
-      try {
-        await api.delete(`/transactions/${id}`);
-        setRefresh((r) => !r);
-      } catch (err) {
-        console.error("Erro ao deletar transação:", err);
-      }
-    }
-  };
+  const handleAdd = () => setRefresh((r) => !r);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -40,34 +24,12 @@ function App() {
     setLoggedIn(false);
   };
 
-  if (!loggedIn) {
-    return <Login onLogin={() => setLoggedIn(true)} />;
-  }
+  if (!loggedIn) return <Login onLogin={() => setLoggedIn(true)} />;
 
   return (
-    <div className="max-w-4xl mx-auto mt-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Controle Financeiro</h1>
-        <button
-          onClick={handleLogout}
-          className="text-sm text-red-600 underline"
-        >
-          Sair
-        </button>
-      </div>
-
+    <SidebarWithModal refresh={refresh} onAdd={handleAdd} onLogout={handleLogout}>
       <Dashboard refresh={refresh} />
-      <TransactionForm
-        transaction={editing}
-        onAdd={handleAdd}
-        onCancel={() => setEditing(null)}
-      />
-      <TransactionList
-        refresh={refresh}
-        onEdit={(t) => setEditing(t)}
-        onDelete={handleDelete}
-      />
-    </div>
+    </SidebarWithModal>
   );
 }
 

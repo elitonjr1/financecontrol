@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import api from "../services/api";
 
-function TransactionForm({ onAdd, transaction, onCancel }) {
+const TransactionForm = forwardRef(function TransactionForm({ onAdd, transaction, onCancel }, ref) {
   const [form, setForm] = useState({
     type: "Expense",
     amount: "",
@@ -14,7 +14,7 @@ function TransactionForm({ onAdd, transaction, onCancel }) {
     if (transaction) {
       setForm({
         ...transaction,
-        date: transaction.date.split("T")[0], // ajusta para o formato do input date
+        date: transaction.date.split("T")[0],
       });
     }
   }, [transaction]);
@@ -57,6 +57,7 @@ function TransactionForm({ onAdd, transaction, onCancel }) {
 
   return (
     <form
+      ref={ref}
       onSubmit={handleSubmit}
       className="p-4 space-y-4 bg-white rounded shadow-md mb-6"
     >
@@ -90,14 +91,54 @@ function TransactionForm({ onAdd, transaction, onCancel }) {
 
       <label className="block">
         Data:
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          className="w-full p-2 border rounded"
-          required
-        />
+        <div className="flex gap-2 mt-1">
+          <button
+            type="button"
+            onClick={() =>
+              setForm((f) => ({
+                ...f,
+                date: new Date().toISOString().split("T")[0],
+              }))
+            }
+            className={`px-3 py-1 rounded ${
+              form.date === new Date().toISOString().split("T")[0]
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200"
+            }`}
+          >
+            Hoje
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              const ontem = new Date();
+              ontem.setDate(ontem.getDate() - 1);
+              setForm((f) => ({
+                ...f,
+                date: ontem.toISOString().split("T")[0],
+              }));
+            }}
+            className={`px-3 py-1 rounded ${
+              form.date ===
+              (() => {
+                const d = new Date();
+                d.setDate(d.getDate() - 1);
+                return d.toISOString().split("T")[0];
+              })()
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200"
+            }`}
+          >
+            Ontem
+          </button>
+          <input
+            type="date"
+            name="date"
+            value={form.date}
+            onChange={handleChange}
+            className="p-2 border rounded flex-1"
+          />
+        </div>
       </label>
 
       <label className="block">
@@ -143,6 +184,6 @@ function TransactionForm({ onAdd, transaction, onCancel }) {
       </div>
     </form>
   );
-}
+});
 
 export default TransactionForm;
