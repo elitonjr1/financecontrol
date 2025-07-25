@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import api from "./services/api";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
-import SidebarWithModal from "./components/SidebarWithModal";
+import Sidebar from "./components/Siderbar/Sidebar";
+//import SidebarWithModal from "./components/SidebarWithModal";
 
 function App() {
   const [refresh, setRefresh] = useState(false);
@@ -16,20 +17,26 @@ function App() {
     }
   }, []);
 
-  const handleAdd = () => setRefresh((r) => !r);
+  // const handleAdd = () => setRefresh((r) => !r);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    delete api.defaults.headers.common["Authorization"];
-    setLoggedIn(false);
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   delete api.defaults.headers.common["Authorization"];
+  //   setLoggedIn(false);
+  // };
 
   if (!loggedIn) return <Login onLogin={() => setLoggedIn(true)} />;
 
   return (
-    <SidebarWithModal refresh={refresh} onAdd={handleAdd} onLogout={handleLogout}>
-      <Dashboard refresh={refresh} />
-    </SidebarWithModal>
+    <div className="flex">
+      <Sidebar></Sidebar>
+      <div className="flex-1 min-h-screen bg-blue-200 flex items-center justify-center">
+        <Dashboard refresh={refresh} />
+      </div>
+    </div>
+    // <SidebarWithModal refresh={refresh} onAdd={handleAdd} onLogout={handleLogout}>
+    //   <Dashboard refresh={refresh} />
+    // </SidebarWithModal>
   );
 }
 
