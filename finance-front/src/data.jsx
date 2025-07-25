@@ -8,10 +8,10 @@ import {
 } from "react-icons/fa";
 
 export const menuItems = [
-  { icon: <FaHome />, text: "Home" },
-  { icon: <FaTasks />, text: "Transactions" },
-  { icon: <FaCreditCard />, text: "Accounts" },
-  { icon: <FaChartPie />, text: "Reports" },
-  { icon: <FaUser />, text: "Profile" },
-  { icon: <FaCog />, text: "Settings" },
+  { icon: <FaHome />, text: "Home", path: "/" },
+  { icon: <FaTasks />, text: "Transactions", path: "/transactions" },
+  { icon: <FaCreditCard />, text: "Accounts", path: "/account" },
+  { icon: <FaChartPie />, text: "Reports", path: "/reports" },
+  { icon: <FaUser />, text: "Profile", path: "/profile" },
+  { icon: <FaCog />, text: "Settings", path: "/settings" },
 ];

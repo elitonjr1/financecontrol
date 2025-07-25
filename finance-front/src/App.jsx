@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
+import { BrowserRouter, RouterProvider } from "react-router-dom";
 import api from "./services/api";
 import Login from "./components/Login";
-import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Siderbar/Sidebar";
-//import SidebarWithModal from "./components/SidebarWithModal";
+import Router from "./components/Router/Router";
 
 function App() {
   const [refresh, setRefresh] = useState(false);
@@ -28,12 +28,19 @@ function App() {
   if (!loggedIn) return <Login onLogin={() => setLoggedIn(true)} />;
 
   return (
-    <div className="flex">
-      <Sidebar></Sidebar>
-      <div className="flex-1 min-h-screen bg-blue-200 flex items-center justify-center">
-        <Dashboard refresh={refresh} />
+    <BrowserRouter>
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1 min-h-screen bg-blue-200 p-4">
+          {/* <Router refresh={refresh} /> */}
+          <Router refresh={refresh}></Router>
+        </div>
       </div>
-    </div>
+    </BrowserRouter>
+    // <RouterProvider router={Routes}>
+
+    // </RouterProvider>
+
     // <SidebarWithModal refresh={refresh} onAdd={handleAdd} onLogout={handleLogout}>
     //   <Dashboard refresh={refresh} />
     // </SidebarWithModal>

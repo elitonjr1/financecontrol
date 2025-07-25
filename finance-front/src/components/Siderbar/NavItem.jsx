@@ -1,23 +1,30 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
-const NavItem = ({ icon, text, isOpen, setIsOpen }) => {
+const NavItem = ({ icon, text, path, isOpen, setIsOpen }) => {
   const handleClick = () => {
-    isOpen && setIsOpen(false);
+    if (isOpen) setIsOpen(false);
   };
 
   return (
-    <div className="flex items-center gap-4 cursor-pointer w-full hover:text-blue-400">
+    <NavLink
+      to={path}
+      onClick={handleClick}
+      className={({ isActive }) =>
+        `flex items-center gap-4 cursor-pointer w-full hover:text-blue-400 ${
+          isActive ? "text-blue-400" : ""
+        }`
+      }
+    >
       <span
-        onClick={handleClick}
         data-tooltip-id={!isOpen ? "sidebar-tooltip" : undefined}
         data-tooltip-content={!isOpen ? text : undefined}
         className="text-xl"
       >
         {icon}
       </span>
-
-      {isOpen && <div onClick={handleClick}>{text}</div>}
-    </div>
+      {isOpen && <div>{text}</div>}
+    </NavLink>
   );
 };
 

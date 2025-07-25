@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaBars } from "react-icons/fa";
 import { menuItems } from "../../data";
-import NavItem from "./NavItem";
 import { Tooltip } from "react-tooltip";
+import NavItem from "./NavItem";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +27,7 @@ const Sidebar = () => {
               key={index}
               icon={item.icon}
               text={item.text}
+              path={item.path}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
             />

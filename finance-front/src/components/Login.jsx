@@ -39,9 +39,7 @@ function Login({ onLogin }) {
       setShowRegister(false);
     } catch (err) {
       console.error(err);
-      setError(
-        err.response?.data || "Erro ao registrar. Tente novamente."
-      );
+      setError(err.response?.data || "Erro ao registrar. Tente novamente.");
     }
   };
 
