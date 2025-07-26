@@ -7,9 +7,6 @@ obj/
 *.pdb
 *.log
 
-# EF Core Migrations (opcional — remova se quiser versionar migrações)
-Migrations/
-
 # VS Code
 .vscode/
 
