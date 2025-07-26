@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter, RouterProvider } from "react-router-dom";
 import api from "./services/api";
-import Login from "./components/Login";
+import Login from "./components/Auth/Login";
 import Sidebar from "./components/Siderbar/Sidebar";
 import Router from "./components/Router/Router";
 

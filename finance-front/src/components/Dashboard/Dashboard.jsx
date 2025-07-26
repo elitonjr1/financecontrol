@@ -14,7 +14,7 @@ import {
 } from "recharts";
 
 import { useEffect, useState } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 
 const COLORS = [
   "#f87171",

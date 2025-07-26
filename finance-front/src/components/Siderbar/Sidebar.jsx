@@ -12,7 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import TransactionForm from "../TransactionForm";
+import TransactionForm from "../Transactions/TransactionForm";
 
 const Sidebar = ({ onAddTransaction, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);

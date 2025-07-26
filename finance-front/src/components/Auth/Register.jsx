@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 
 function Register({ onSuccess, onCancel }) {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -18,9 +18,7 @@ function Register({ onSuccess, onCancel }) {
       alert("Cadastro realizado com sucesso!");
       if (onSuccess) onSuccess();
     } catch (err) {
-      setError(
-        err.response?.data || "Erro ao registrar. Tente novamente."
-      );
+      setError(err.response?.data || "Erro ao registrar. Tente novamente.");
     }
   };
 

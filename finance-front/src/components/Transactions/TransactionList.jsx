@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
+import api from "../../services/api";
 
 function TransactionList({ onEdit, onDelete, refresh }) {
   const [transactions, setTransactions] = useState([]);
