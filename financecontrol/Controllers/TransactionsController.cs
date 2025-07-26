@@ -123,7 +123,7 @@ namespace FinanceControl.Controllers
                 balance
             });
         }
-
+        
         [Authorize]
         [HttpGet("by-category")]
         public async Task<ActionResult<IEnumerable<object>>> GetTotalsByCategory()
@@ -131,16 +131,41 @@ namespace FinanceControl.Controllers
             Guid userId = GetUserId();
 
             var result = await _context.Transactions
-                .Where(t => t.Type == "Expense" && t.UserId == userId)
-                .GroupBy(t => t.Category)
+                .Where(t => t.UserId == userId)
+                .GroupBy(t => new { t.Category, t.Type })
                 .Select(g => new
                 {
-                    category = g.Key,
+                    category = g.Key.Category,
+                    type = g.Key.Type,
                     total = g.Sum(t => t.Amount)
                 })
                 .ToListAsync();
 
             return Ok(result);
         }
+
+        [Authorize]
+        [HttpGet("by-month")]
+        public async Task<ActionResult<IEnumerable<object>>> GetMonthlySummary()
+        {
+            Guid userId = GetUserId();
+
+            var data = await _context.Transactions
+                .Where(t => t.UserId == userId)
+                .GroupBy(t => new { t.Type, Month = t.Date.Month, Year = t.Date.Year })
+                .Select(g => new
+                {
+                    type = g.Key.Type,
+                    month = g.Key.Month,
+                    year = g.Key.Year,
+                    total = g.Sum(t => t.Amount)
+                })
+                .OrderBy(g => g.year).ThenBy(g => g.month)
+                .ToListAsync();
+
+            return Ok(data);
+        }
+        
+        
     }
 }

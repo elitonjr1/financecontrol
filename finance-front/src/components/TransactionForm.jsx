@@ -1,7 +1,10 @@
 import { useEffect, useState, forwardRef } from "react";
 import api from "../services/api";
 
-const TransactionForm = forwardRef(function TransactionForm({ onAdd, transaction, onCancel }, ref) {
+const TransactionForm = forwardRef(function TransactionForm(
+  { onAddTransaction, transaction, onCancel },
+  ref
+) {
   const [form, setForm] = useState({
     type: "Expense",
     amount: "",
@@ -48,7 +51,7 @@ const TransactionForm = forwardRef(function TransactionForm({ onAdd, transaction
         description: "",
       });
 
-      if (onAdd) onAdd();
+      if (onAddTransaction) onAddTransaction();
     } catch (error) {
       console.error("Erro ao salvar transação:", error);
       alert("Erro ao salvar transação.");

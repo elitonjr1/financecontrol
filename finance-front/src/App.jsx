@@ -17,33 +17,25 @@ function App() {
     }
   }, []);
 
-  // const handleAdd = () => setRefresh((r) => !r);
+  const handleAdd = () => setRefresh((r) => !r);
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem("token");
-  //   delete api.defaults.headers.common["Authorization"];
-  //   setLoggedIn(false);
-  // };
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    delete api.defaults.headers.common["Authorization"];
+    setLoggedIn(false);
+  };
 
   if (!loggedIn) return <Login onLogin={() => setLoggedIn(true)} />;
 
   return (
     <BrowserRouter>
       <div className="flex">
-        <Sidebar />
+        <Sidebar onAdd={handleAdd} onLogout={handleLogout} />
         <div className="flex-1 min-h-screen bg-blue-200 p-4">
-          {/* <Router refresh={refresh} /> */}
           <Router refresh={refresh}></Router>
         </div>
       </div>
     </BrowserRouter>
-    // <RouterProvider router={Routes}>
-
-    // </RouterProvider>
-
-    // <SidebarWithModal refresh={refresh} onAdd={handleAdd} onLogout={handleLogout}>
-    //   <Dashboard refresh={refresh} />
-    // </SidebarWithModal>
   );
 }
 
