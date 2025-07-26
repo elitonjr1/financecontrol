@@ -35,7 +35,7 @@ namespace FinanceControl.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Transaction>> GetTransaction(int id)
+        public async Task<ActionResult<Transaction>> GetTransaction(Guid id)
         {
             Guid userId = GetUserId();
             var transaction = await _context.Transactions
@@ -61,7 +61,7 @@ namespace FinanceControl.Controllers
 
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTransaction(int id, Transaction transaction)
+        public async Task<IActionResult> PutTransaction(Guid id, Transaction transaction)
         {
             Guid userId = GetUserId();
 
@@ -84,7 +84,7 @@ namespace FinanceControl.Controllers
 
         [Authorize]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTransaction(int id)
+        public async Task<IActionResult> DeleteTransaction(Guid id)
         {
             Guid userId = GetUserId();
 
