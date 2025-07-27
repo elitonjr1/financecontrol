@@ -27,7 +27,7 @@ const Account = ({ onEdit, onDelete, refresh }) => {
     return <p className="text-center">Nenhuma conta encontrada.</p>;
   return (
     <div className="p-4 bg-white rounded shadow-md mb-6 w-full">
-      <h2 className="text-xl font-bold mb-4"></h2>Account
+      <h2 className="text-xl font-bold mb-4"></h2>Contas
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {accounts.map((acc) => (
           <AccountItem
