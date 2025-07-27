@@ -3,6 +3,7 @@ import { BrowserRouter, RouterProvider } from "react-router-dom";
 import api from "./services/api";
 import Login from "./components/Auth/Login";
 import Sidebar from "./components/Siderbar/Sidebar";
+import Navbar from "./components/Siderbar/Navbar";
 import Router from "./components/Router/Router";
 
 function App() {
@@ -29,10 +30,19 @@ function App() {
 
   return (
     <BrowserRouter>
-      <div className="flex">
+      <div className="flex min-h-screen ">
+        {/* Sidebar na esquerda */}
         <Sidebar onAdd={handleAdd} onLogout={handleLogout} />
-        <div className="flex-1 min-h-screen bg-blue-200 p-4">
-          <Router refresh={refresh}></Router>
+
+        {/* Área principal à direita */}
+        <div className="flex flex-col flex-1">
+          {/* Navbar fixa no topo do conteúdo */}
+          <Navbar />
+
+          {/* Conteúdo da página */}
+          <div className="flex-1 bg-light-background p-4 overflow-y-auto">
+            <Router refresh={refresh} />
+          </div>
         </div>
       </div>
     </BrowserRouter>

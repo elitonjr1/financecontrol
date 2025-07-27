@@ -5,14 +5,8 @@ import { IoAddCircleOutline, IoLogOutOutline } from "react-icons/io5";
 import { menuItems } from "../../data";
 import { Tooltip } from "react-tooltip";
 import NavItem from "./NavItem";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import TransactionForm from "../Transactions/TransactionForm";
+import logo from "../../assets/img/finaura-transparent.svg";
 
 const Sidebar = ({ onAddTransaction, onLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,42 +17,45 @@ const Sidebar = ({ onAddTransaction, onLogout }) => {
         initial={{ width: 60 }}
         animate={{ width: isOpen ? 240 : 60 }}
         transition={{ duration: 0.4 }}
-        className="bg-gray-900 h-screen text-white p-4"
+        className="bg-[var(--sidebar)] text-[var(--sidebar-foreground)] h-screen p-4"
       >
         <button
           className="text-xl mb-8"
           onClick={() => setIsOpen((prev) => !prev)}
         >
-          <FaBars />
+          <img src={logo} alt="Logo" className="w-8 h-8 object-contain" />
         </button>
-        <nav className="flex flex-col gap-11">
+        <nav className="flex flex-col gap-11 mt-32">
           {/* Botão + com Modal */}
-          <Dialog
-            open={isTransactionDialogOpen}
-            onOpenChange={SetIsTransactionDialogOpen}
+          <button
+            className="flex items-center gap-4 cursor-pointer hover:text-blue-400 text-xl"
+            data-tooltip-id={!isOpen ? "sidebar-tooltip" : undefined}
+            data-tooltip-content={!isOpen ? "Nova Transação" : undefined}
+            onClick={() => document.getElementById("my_modal_5").showModal()}
           >
-            <DialogTrigger asChild>
-              <button
-                className="flex items-center gap-4 cursor-pointer hover:text-blue-400 text-xl"
-                data-tooltip-id={!isOpen ? "sidebar-tooltip" : undefined}
-                data-tooltip-content={!isOpen ? "Nova Transação" : undefined}
-              >
-                <IoAddCircleOutline size={24} />
-                {isOpen && <span>Nova Transação</span>}
-              </button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Nova Transação</DialogTitle>
-              </DialogHeader>
+            <IoAddCircleOutline size={24} />
+            {isOpen && <div>Nova Transação</div>}
+          </button>
+          <dialog
+            id="my_modal_5"
+            className="modal modal-bottom sm:modal-middle"
+          >
+            <div className="modal-box text-black">
+              <h3 className="font-bold text-lg">Nova Transação</h3>
               <TransactionForm
                 onAddTransaction={() => {
                   onAddTransaction?.();
                   SetIsTransactionDialogOpen(false);
                 }}
               />
-            </DialogContent>
-          </Dialog>
+              <div className="modal-action">
+                <form method="dialog">
+                  {/* if there is a button in form, it will close the modal */}
+                  <button className="btn">Close</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
           {menuItems.map((item, index) => (
             <NavItem
               key={index}
